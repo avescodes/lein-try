@@ -51,6 +51,10 @@ Launch REPL with specified dependencies available.
 Arguments: ([& args])
 ```
 
+## Contributions
+
+Contributions are more than welcome. Fire away in an [issue](../../issues/new) or pull-request.
+
 ## License
 
 Copyright &copy; 2013 Ryan Neufeld
