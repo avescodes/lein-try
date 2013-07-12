@@ -17,22 +17,22 @@
   ; -> ([clj-time \"0.5.1\"])"
   [args]
   (->> args
-       (mapv #(clojure.string/replace % #"\[|\]" ""))
-       (#(update-in % [0] edn/read-string))
+       (map #(clojure.string/replace % #"\[|\]" ""))
        (partition 2)
-       (map vec)))
+       (map vec)
+       (map #(update-in % [0] edn/read-string))))
 
 (defn resolve-deps
   "Resolve newly-added try-dependencies, adding them to classpath."
   [project]
   ;; TODO: I don't think this resolves the full hierarchy of dependencies
-  (lein-cp/resolve-dependencies ::try-dependencies project :add-classpath? true)
+  (lein-cp/resolve-dependencies ::dependencies project :add-classpath? true)
   project)
 
 (defn add-deps
   "Add list of dependencies to project and resolve them"
   [deps project]
-  (assoc project ::try-dependencies deps))
+  (assoc project ::dependencies deps))
 
 (defn ^:no-project-needed try
   "Launch REPL with specified dependencies available.
