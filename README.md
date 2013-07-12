@@ -4,9 +4,12 @@ A [Leiningen](https://github.com/technomancy/leiningen) plugin for trying out
 Clojure libraries in a REPL without creating a project or adding them to an existing
 project.
 
+
+### DON'T USE ME YET, I DON'T WORK...
+
 ## Usage
 
-__Leiningen__ ([via Clojars](https://clojars.org/lein-ancient))
+__Leiningen__ ([via Clojars](https://clojars.org/lein-try))
 
 Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
 
