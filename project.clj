@@ -3,5 +3,5 @@
   :url "https://github.com/rkneufeld/lein-try"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies  [[alembic  "0.1.3"]]
+  :dependencies  []
   :eval-in-leiningen true)

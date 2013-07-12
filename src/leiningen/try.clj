@@ -1,7 +1,7 @@
 (ns leiningen.try
   (:require [leiningen.repl :as lein-repl]
-            [clojure.edn :as edn]
-            [alembic.still :as still]))
+            [leiningen.core.classpath :as lein-cp]
+            [clojure.edn :as edn]))
 
 (def args ["[clj-time" "\"1.2.3\"]"])
 
@@ -22,6 +22,18 @@
        (partition 2)
        (map vec)))
 
+(defn resolve-deps
+  "Resolve newly-added try-dependencies, adding them to classpath."
+  [project]
+  ;; TODO: I don't think this resolves the full hierarchy of dependencies
+  (lein-cp/resolve-dependencies ::try-dependencies project :add-classpath? true)
+  project)
+
+(defn add-deps
+  "Add list of dependencies to project and resolve them"
+  [deps project]
+  (assoc project ::try-dependencies deps))
+
 (defn ^:no-project-needed try
   "Launch REPL with specified dependencies available.
 
@@ -30,12 +42,10 @@
     lein try [io.rkn/conformity \"0.2.1\"] [com.datomic/datomic-free \"0.8.4020.26\"]
     lein try io.rkn/conformity 0.2.1
 
-  NOTE: lein-try does not require [] "
+  NOTE: lein-try does not require []"
   [project & args]
-  (println "Fetching dependencies... (takes a while the first time)")
-  (let [deps (->dep-pairs args)]
-    (doseq [dep deps]
-      (still/distill dep)
-      (println "lein-try loaded" (pr-str dep))))
-  (println)
-  (lein-repl/repl project))
+  (let [with-try-deps (partial add-deps (->dep-pairs args))]
+    (-> project
+      with-try-deps
+      resolve-deps
+      lein-repl/repl)))
