@@ -1,4 +1,4 @@
-(defproject lein-try "0.1.0"
+(defproject lein-try "0.1.1"
   :description "Try out libraries without adding them as dependencies"
   :url "https://github.com/rkneufeld/lein-try"
   :license {:name "Eclipse Public License"

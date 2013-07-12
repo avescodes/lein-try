@@ -11,7 +11,7 @@ __Leiningen__ ([via Clojars](https://clojars.org/lein-try))
 Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
 
 ```clojure
-[lein-try "0.1.0"]
+[lein-try "0.1.1"]
 ```
 
 This plugin requires Leiningen >= 2.0.0.
