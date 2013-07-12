@@ -6,7 +6,7 @@ project.
 
 ## Usage
 
-__Leiningen__ ([via Clojars](https://clojars.org/lein-ancient))
+__Leiningen__ ([via Clojars](https://clojars.org/lein-try))
 
 Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
 
