@@ -6,7 +6,7 @@ project.
 
 ## Usage
 
-__Leiningen__ ([via Clojars](https://clojars.org/lein-try))
+#### Leiningen ([via Clojars](https://clojars.org/lein-try))
 
 Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
 
@@ -16,7 +16,7 @@ Put the following into the `:plugins` vector of the `:user` profile in your `~/.
 
 This plugin requires Leiningen >= 2.0.0.
 
-__Command Line__
+#### Command Line
 
 You can use `lein-try` to open a REPL with any dependencies you specify loaded and ready to use.
 
@@ -50,6 +50,15 @@ Launch REPL with specified dependencies available.
 
 Arguments: ([& args])
 ```
+
+#### On ZSH
+
+[ZSH](zsh.org) has this fun feature where `[..]` is a special type of pattern matching–this kind of sucks for this plugin, no?
+
+You have two options to get around this:
+
+1. Use `noglob` before `lein try`. (If you never use `[]` matching with lein, just `alias lein="noglob lein"` in your zshrc.)
+2. Copy-paste *only* the library and dependency (i.e. `lein try clj-time "0.5.1"`)
 
 ## Contributions
 
