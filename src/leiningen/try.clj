@@ -22,17 +22,21 @@
        (map vec)
        (map #(update-in % [0] edn/read-string))))
 
-(defn resolve-deps
+(defn resolve-try-deps!
   "Resolve newly-added try-dependencies, adding them to classpath."
   [project]
   ;; TODO: I don't think this resolves the full hierarchy of dependencies
-  (lein-cp/resolve-dependencies ::dependencies project :add-classpath? true)
-  project)
+  (lein-cp/resolve-dependencies ::dependencies project :add-classpath? true))
 
-(defn add-deps
-  "Add list of dependencies to project and resolve them"
+(defn add-try-deps
+  "Add list of try-dependencies to project."
   [deps project]
-  (assoc project ::dependencies deps))
+  (update-in project [::dependencies] (comp vec concat) deps))
+
+(defn start-repl!
+  "Run REPL inside the same process to avoid losing classpath information."
+  [project]
+  (lein-repl/repl (assoc project :eval-in :leiningen)))
 
 (defn ^:no-project-needed try
   "Launch REPL with specified dependencies available.
@@ -44,8 +48,6 @@
 
   NOTE: lein-try does not require []"
   [project & args]
-  (let [with-try-deps (partial add-deps (->dep-pairs args))]
-    (-> project
-      with-try-deps
-      resolve-deps
-      lein-repl/repl)))
+  (let [project (add-try-deps (->dep-pairs args) project)]
+    (resolve-try-deps! project)
+    (start-repl! project)))

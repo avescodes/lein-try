@@ -10,4 +10,7 @@
 
 (deftest add-deps-test
   (is (= {:leiningen.try/dependencies [[:a :b]]}
-         (add-deps [[:a :b]] {}))))
+         (add-try-deps [[:a :b]] {})))
+  (is (= {:leiningen.try/dependencies [[:a :b] [:c :d]]}
+         (add-try-deps [[:c :d]] {:leiningen.try/dependencies [[:a :b]]})))
+  )
