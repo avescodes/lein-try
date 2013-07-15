@@ -26,17 +26,19 @@
   "Resolve newly-added try-dependencies, adding them to classpath."
   [project]
   ;; TODO: I don't think this resolves the full hierarchy of dependencies
-  (lein-cp/resolve-dependencies ::dependencies project :add-classpath? true))
+  (lein-cp/resolve-dependencies :dependencies project :add-classpath? true))
 
 (defn add-try-deps
   "Add list of try-dependencies to project."
   [deps project]
-  (update-in project [::dependencies] (comp vec concat) deps))
+  (update-in project [:dependencies] (comp vec concat) deps))
 
 (defn start-repl!
   "Run REPL inside the same process to avoid losing classpath information."
   [project]
-  (lein-repl/repl (assoc project :eval-in :leiningen)))
+  (let [cfg {:host (lein-repl/repl-host project) 
+             :port (lein-repl/repl-port project)}]
+    (->> (lein-repl/server project cfg false) (lein-repl/client project))))
 
 (defn ^:no-project-needed try
   "Launch REPL with specified dependencies available.
