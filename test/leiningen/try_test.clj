@@ -12,5 +12,4 @@
   (is (= {:dependencies [[:a :b]]}
          (add-try-deps [[:a :b]] {})))
   (is (= {:dependencies [[:a :b] [:c :d]]}
-         (add-try-deps [[:c :d]] {:dependencies [[:a :b]]})))
-  )
+         (add-try-deps [[:c :d]] {:dependencies [[:a :b]]}))))
