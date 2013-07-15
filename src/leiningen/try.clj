@@ -42,7 +42,7 @@
     (let [cfg {:host (#'lein-repl/repl-host project) 
                :port (#'lein-repl/repl-port project)}]
       (->> (lein-repl/server project cfg false) (lein-repl/client project)))
-    (catch Exception _
+    (catch clojure.lang.ArityException e
       ;; Assume exception is due to bad signatures on server/client
       ;; and fall back to making it work in Leiningen 2.1.3:
       (lein-repl/repl (assoc project :eval-in :leiningen)))))
