@@ -11,7 +11,7 @@ project.
 Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
 
 ```clojure
-[lein-try "0.1.3"]
+[lein-try "0.2.0"]
 ```
 
 This plugin requires Leiningen >= 2.1.3.
