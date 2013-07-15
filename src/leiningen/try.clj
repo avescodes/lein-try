@@ -22,30 +22,37 @@
        (map vec)
        (map #(update-in % [0] edn/read-string))))
 
-(defn resolve-try-deps!
+(defn- resolve-try-deps!
   "Resolve newly-added try-dependencies, adding them to classpath."
   [project]
   ;; TODO: I don't think this resolves the full hierarchy of dependencies
   (lein-cp/resolve-dependencies :dependencies project :add-classpath? true))
 
-(defn add-try-deps
+(defn- add-try-deps
   "Add list of try-dependencies to project."
   [deps project]
   (update-in project [:dependencies] (comp vec concat) deps))
 
-(defn start-repl!
-  "Run REPL inside the same process to avoid losing classpath information."
+(defn- start-repl!
+  "Start a REPL inside our current process."
   [project]
   (try
-    ;; use #' to access private Vars so we can compile against
-    ;; Leiningen 2.1.3 even tho' this code will throw an exception:
-    (let [cfg {:host (#'lein-repl/repl-host project) 
-               :port (#'lein-repl/repl-port project)}]
-      (->> (lein-repl/server project cfg false) (lein-repl/client project)))
+    ;; Leiningen 2.1.3 and 2.2.0 have drastically different REPL APIs. Here's
+    ;; the deal:
+    ;;
+    ;; * We have to use `#'` on `repl-host` and `repl-port` to compile.
+    ;; * Leiningen 2.1.3 will raise an `ArityException` when we call `server`
+    ;;   with one too many args. This is our clue we're in 2.1.3-land.
+    (let [cfg {:host (#'lein-repl/repl-host project)
+               :port (#'lein-repl/repl-port project)}
+          uri (lein-repl/server project cfg false)]
+      (lein-repl/client project uri))
     (catch clojure.lang.ArityException e
-      ;; Assume exception is due to bad signatures on server/client
-      ;; and fall back to making it work in Leiningen 2.1.3:
-      (lein-repl/repl (assoc project :eval-in :leiningen)))))
+      ;; When we detect that we are in 2.1.3, fall back to a compatible
+      ;; API-call
+      (-> project
+          (assoc :eval-in :leiningen)
+          lein-repl/repl))))
 
 (defn ^:no-project-needed try
   "Launch REPL with specified dependencies available.
@@ -57,6 +64,7 @@
 
   NOTE: lein-try does not require []"
   [project & args]
-  (let [project (add-try-deps (->dep-pairs args) project)]
+  (let [dependencies (->dep-pairs args)
+        project (add-try-deps dependencies project)]
     (resolve-try-deps! project)
     (start-repl! project)))
