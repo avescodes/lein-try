@@ -28,7 +28,7 @@
   ;; TODO: I don't think this resolves the full hierarchy of dependencies
   (lein-cp/resolve-dependencies :dependencies project :add-classpath? true))
 
-(defn add-try-deps
+(defn- add-try-deps
   "Add list of try-dependencies to project."
   [deps project]
   (update-in project [:dependencies] (comp vec concat) deps))

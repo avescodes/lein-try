@@ -9,7 +9,8 @@
          (->dep-pairs ["[clj-time" "0.5.1]" "[http-kit" "2.1.5]"]))))
 
 (deftest add-deps-test
-  (is (= {:dependencies [[:a :b]]}
-         (add-try-deps [[:a :b]] {})))
-  (is (= {:dependencies [[:a :b] [:c :d]]}
-         (add-try-deps [[:c :d]] {:dependencies [[:a :b]]}))))
+  (let [add-try-deps #'leiningen.try/add-try-deps]
+    (is (= {:dependencies [[:a :b]]}
+           (add-try-deps [[:a :b]] {})))
+    (is (= {:dependencies [[:a :b] [:c :d]]}
+           (add-try-deps [[:c :d]] {:dependencies [[:a :b]]})))))
