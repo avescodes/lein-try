@@ -3,8 +3,6 @@
             [leiningen.core.classpath :as lein-cp]
             [clojure.edn :as edn]))
 
-(def args ["[clj-time" "\"1.2.3\"]"])
-
 (defn ->dep-pairs
   "From a sequence of command-line args describing dependency-version pairs,
   return a list of vector pairs. Square braces in arg strings are ignored.
