@@ -77,6 +77,7 @@
 
     lein try [io.rkn/conformity \"0.2.1\"] [com.datomic/datomic-free \"0.8.4020.26\"]
     lein try io.rkn/conformity 0.2.1
+    lein try io.rkn/conformity # This uses the most recent version
 
   NOTE: lein-try does not require []"
   [project & args]

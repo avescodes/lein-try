@@ -11,7 +11,7 @@ project.
 Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
 
 ```clojure
-[lein-try "0.2.0"]
+[lein-try "0.3.0"]
 ```
 
 This plugin requires Leiningen >= 2.1.3.
@@ -37,6 +37,14 @@ Clojure 1.5.1
 user=>
 ```
 
+You can even leave off the version number and leiningen will pull the most recently released version! (Thanks @xsc)
+
+```bash
+$ lein try clj-time
+#...
+user=>
+```
+
 To see available options, call `lein help try`:
 
 ```bash
@@ -47,6 +55,7 @@ Launch REPL with specified dependencies available.
 
     lein try [io.rkn/conformity "0.2.1"] [com.datomic/datomic-free "0.8.4020.26"]
     lein try io.rkn/conformity 0.2.1
+    lein try io.rkn/conformity # This uses the most recent version
 
 Arguments: ([& args])
 ```
