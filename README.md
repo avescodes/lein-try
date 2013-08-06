@@ -60,6 +60,14 @@ Launch REPL with specified dependencies available.
 Arguments: ([& args])
 ```
 
+#### In Emacs
+
+Miss Emacs integration while `lein try`ing? In your `*scratch*` buffer, set your `inferior-lisp-program` var...
+
+`(setq inferior-lisp-program "lein try tentacles")`
+
+and then launch `M-x inferior-lisp`.
+
 #### On ZSH
 
 [ZSH](zsh.org) has this fun feature where `[..]` is a special type of pattern matching–this kind of sucks for this plugin, no?
