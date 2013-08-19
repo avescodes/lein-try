@@ -31,7 +31,14 @@
 
 (deftest add-deps-test
   (let [add-try-deps #'leiningen.try/add-try-deps]
-    (is (= {:dependencies [[:a :b]]}
-           (add-try-deps [[:a :b]] {})))
-    (is (= {:dependencies [[:a :b] [:c :d]]}
-           (add-try-deps [[:c :d]] {:dependencies [[:a :b]]})))))
+    (is (= (add-try-deps [[:a :b]] {})
+           {:profiles {:try {:dependencies [[:a :b]]}}}))
+    (is (= (add-try-deps [[:a :b]] {:dependencies [[:c :d]]})
+           {:dependencies [[:c :d]]
+            :profiles {:try {:dependencies [[:a :b]]}}}))
+    (is (= (add-try-deps [[:c :d]] {:profiles {:try {:dependencies [[:a :b]]}}})
+           {:profiles {:try {:dependencies [[:a :b] [:c :d]]}}}))
+    (is (= (add-try-deps [[:e :f]] {:dependencies [[:c :d]]
+                                    :profiles {:try {:dependencies [[:a :b]]}}})
+           {:dependencies [[:c :d]]
+            :profiles {:try {:dependencies [[:a :b] [:e :f]]}}}))))
