@@ -1,6 +1,6 @@
 (ns leiningen.try
-  (:require [leiningen.repl :as lein-repl]
-            [leiningen.core.classpath :as lein-cp]
+  (:require [leiningen.core.project :as prj]
+            [leiningen.core.main :as main]
             [clojure.edn :as edn]))
 
 (defn- version-string?
@@ -38,39 +38,21 @@
         (map #(clojure.string/replace % #"\[|\]" ""))
         lazy-convert))))
 
-(defn- resolve-try-deps!
-  "Resolve newly-added try-dependencies, adding them to classpath."
-  [project]
-  ;; TODO: I don't think this resolves the full hierarchy of dependencies
-  (lein-cp/resolve-dependencies :dependencies project :add-classpath? true))
-
 (defn- add-try-deps
   "Add list of try-dependencies to project."
   [deps project]
-  (update-in project [:dependencies] (comp vec concat) deps))
+  (update-in project [:profiles :try :dependencies] (comp vec concat) deps))
 
-(defn- start-repl!
-  "Start a REPL inside our current process."
+(defn- start-try-repl!
+  "Resolve try-dependencies and start REPL."
   [project]
-  (try
-    ;; Leiningen 2.1.3 and 2.2.0 have drastically different REPL APIs. Here's
-    ;; the deal:
-    ;;
-    ;; * We have to use `#'` on `repl-host` and `repl-port` to compile.
-    ;; * Leiningen 2.1.3 will raise an `ArityException` when we call `server`
-    ;;   with one too many args. This is our clue we're in 2.1.3-land.
-    (let [cfg {:host (#'lein-repl/repl-host project)
-               :port (#'lein-repl/repl-port project)}
-          uri (lein-repl/server project cfg false)]
-      (lein-repl/client project uri))
-    (catch clojure.lang.ArityException e
-      ;; When we detect that we are in 2.1.3, fall back to a compatible
-      ;; API-call
-      (-> project
-          (assoc :eval-in :leiningen)
-          lein-repl/repl))))
+  (let [project (when project 
+                  (prj/merge-profiles
+                    (prj/project-with-profiles project)
+                    [:try]))]
+    (main/apply-task "repl" project nil)))
 
-(defn ^:no-project-needed try
+(defn ^:no-project-needed ^:higher-order try
   "Launch REPL with specified dependencies available.
 
   Usage:
@@ -83,5 +65,4 @@
   [project & args]
   (let [dependencies (->dep-pairs args)
         project (add-try-deps dependencies project)]
-    (resolve-try-deps! project)
-    (start-repl! project)))
+    (start-try-repl! project)))
