@@ -4,6 +4,7 @@ A [Leiningen](https://github.com/technomancy/leiningen) plugin for trying out
 Clojure libraries in a REPL without creating a project or adding them to an existing
 project.
 
+Special thanks to contributors [@xsc](https://github.com/xsc) and [@seancorfield](https://github.com/seancorfield) for making lein-try amazing.
 ## Usage
 
 #### Leiningen ([via Clojars](https://clojars.org/lein-try))
