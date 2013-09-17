@@ -25,8 +25,8 @@
   (letfn [(lazy-convert [args]
             (lazy-seq 
               (when (seq args)
-                (let [[^String artifact & rst] args
-                      artifact (read-string artifact)]
+                (let [[^String artifact-str & rst] args
+                      artifact (symbol artifact-str)]
                   (if-let [[^String v & nxt] (seq rst)]
                     (if (version-string? v)
                       (cons [artifact v] (lazy-convert nxt))
