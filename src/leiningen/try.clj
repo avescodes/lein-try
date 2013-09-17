@@ -1,7 +1,6 @@
 (ns leiningen.try
   (:require [leiningen.core.project :as prj]
-            [leiningen.core.main :as main]
-            [clojure.edn :as edn]))
+            [leiningen.core.main :as main]))
 
 (defn- version-string?
   "Check if a given String represents a version number."
@@ -20,14 +19,14 @@
 
   (->dep-pairs [\"[clj-time\" \"\\\"0.5.1\\\"]\"])
   ; -> ([clj-time \"0.5.1\"])
-  
+
   (->dep-pairs [\"clj-time\" \"conformity\"])
   ; -> ([clj-time \"RELEASE\"] [conformity \"RELEASE\"])"
   (letfn [(lazy-convert [args]
             (lazy-seq 
               (when (seq args)
-                (let [[^String artifact & rst] args
-                      artifact (edn/read-string artifact)]
+                (let [[^String artifact-str & rst] args
+                      artifact (symbol artifact-str)]
                   (if-let [[^String v & nxt] (seq rst)]
                     (if (version-string? v)
                       (cons [artifact v] (lazy-convert nxt))
