@@ -10,20 +10,20 @@
 
 (def ->dep-pairs
   "From a sequence of command-line args describing dependency-version pairs,
-   return a list of vector pairs. Square braces in arg strings are ignored. If
-   no version is given, 'RELEASE' will be used.
+  return a list of vector pairs. If no version is given, 'RELEASE' will be
+  used.
 
   Example:
   (->dep-pairs [\"clj-time\" \"\\\"0.5.1\\\"]\"])
   ; -> ([clj-time \"0.5.1\"])
 
-  (->dep-pairs [\"[clj-time\" \"\\\"0.5.1\\\"]\"])
+  (->dep-pairs [\"clj-time\" \"\\\"0.5.1\\\"\"])
   ; -> ([clj-time \"0.5.1\"])
 
   (->dep-pairs [\"clj-time\" \"conformity\"])
   ; -> ([clj-time \"RELEASE\"] [conformity \"RELEASE\"])"
   (letfn [(lazy-convert [args]
-            (lazy-seq 
+            (lazy-seq
               (when (seq args)
                 (let [[^String artifact-str & rst] args
                       artifact (symbol artifact-str)]
@@ -33,9 +33,7 @@
                       (cons [artifact "RELEASE"] (lazy-convert rst)))
                     (vector [artifact "RELEASE"]))))))]
     (fn [args]
-      (->> args
-        (map #(clojure.string/replace % #"\[|\]" ""))
-        lazy-convert))))
+      (lazy-convert args))))
 
 (defn- add-try-deps
   "Add list of try-dependencies to project."
@@ -45,7 +43,7 @@
 (defn- start-try-repl!
   "Resolve try-dependencies and start REPL."
   [project]
-  (let [project (when project 
+  (let [project (when project
                   (prj/merge-profiles
                     (prj/project-with-profiles project)
                     [:try]))]

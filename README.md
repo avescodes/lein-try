@@ -5,6 +5,7 @@ Clojure libraries in a REPL without creating a project or adding them to an exis
 project.
 
 Special thanks to contributors [@xsc](https://github.com/xsc) and [@seancorfield](https://github.com/seancorfield) for making lein-try amazing.
+
 ## Usage
 
 #### Leiningen ([via Clojars](https://clojars.org/lein-try))
@@ -22,7 +23,7 @@ This plugin requires Leiningen >= 2.1.3.
 You can use `lein-try` to open a REPL with any dependencies you specify loaded and ready to use.
 
 ```bash
-$ lein try [clj-time "0.5.1"]
+$ lein try clj-time "0.5.1"
 Fetching dependencies... (takes a while the first time)
 lein-try loaded [clj-time "0.5.1"]
 
@@ -54,7 +55,7 @@ Launch REPL with specified dependencies available.
 
   Usage:
 
-    lein try [io.rkn/conformity "0.2.1"] [com.datomic/datomic-free "0.8.4020.26"]
+    lein try io.rkn/conformity "0.2.1" com.datomic/datomic-free "0.8.4020.26"
     lein try io.rkn/conformity 0.2.1
     lein try io.rkn/conformity # This uses the most recent version
 
