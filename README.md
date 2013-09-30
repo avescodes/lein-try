@@ -39,7 +39,10 @@ Clojure 1.5.1
 user=>
 ```
 
-You can even leave off the version number and leiningen will pull the most recently released version! (Thanks @xsc)
+You can even leave off the version number and leiningen will pull the most
+recently released version! (Thanks @xsc.) The command `lein try clj-time`
+evaluates as `lein try clj-time "RELEASE"`. Feel free to mix versioned and
+unversioned dependencies–we're good like that.
 
 ```bash
 $ lein try clj-time
@@ -69,15 +72,6 @@ Miss Emacs integration while `lein try`ing? In your `*scratch*` buffer, set your
 `(setq inferior-lisp-program "lein try tentacles")`
 
 and then launch `M-x inferior-lisp`.
-
-#### On ZSH
-
-[ZSH](zsh.org) has this fun feature where `[..]` is a special type of pattern matching–this kind of sucks for this plugin, no?
-
-You have two options to get around this:
-
-1. Use `noglob` before `lein try`. (If you never use `[]` matching with lein, just `alias lein="noglob lein"` in your zshrc.)
-2. Copy-paste *only* the library and dependency (i.e. `lein try clj-time "0.5.1"`)
 
 ## Contributions
 
