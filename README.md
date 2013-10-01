@@ -5,6 +5,7 @@ Clojure libraries in a REPL without creating a project or adding them to an exis
 project.
 
 Special thanks to contributors [@xsc](https://github.com/xsc) and [@seancorfield](https://github.com/seancorfield) for making lein-try amazing.
+
 ## Usage
 
 #### Leiningen ([via Clojars](https://clojars.org/lein-try))
@@ -12,7 +13,7 @@ Special thanks to contributors [@xsc](https://github.com/xsc) and [@seancorfield
 Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
 
 ```clojure
-[lein-try "0.3.2"]
+[lein-try "0.4.0"]
 ```
 
 This plugin requires Leiningen >= 2.1.3.
@@ -22,7 +23,7 @@ This plugin requires Leiningen >= 2.1.3.
 You can use `lein-try` to open a REPL with any dependencies you specify loaded and ready to use.
 
 ```bash
-$ lein try [clj-time "0.5.1"]
+$ lein try clj-time "0.5.1"
 Fetching dependencies... (takes a while the first time)
 lein-try loaded [clj-time "0.5.1"]
 
@@ -38,7 +39,10 @@ Clojure 1.5.1
 user=>
 ```
 
-You can even leave off the version number and leiningen will pull the most recently released version! (Thanks @xsc)
+You can even leave off the version number and leiningen will pull the most
+recently released version! (Thanks @xsc.) The command `lein try clj-time`
+evaluates as `lein try clj-time "RELEASE"`. Feel free to mix versioned and
+unversioned dependencies–we're good like that.
 
 ```bash
 $ lein try clj-time
@@ -54,7 +58,7 @@ Launch REPL with specified dependencies available.
 
   Usage:
 
-    lein try [io.rkn/conformity "0.2.1"] [com.datomic/datomic-free "0.8.4020.26"]
+    lein try io.rkn/conformity "0.2.1" com.datomic/datomic-free "0.8.4020.26"
     lein try io.rkn/conformity 0.2.1
     lein try io.rkn/conformity # This uses the most recent version
 
@@ -68,15 +72,6 @@ Miss Emacs integration while `lein try`ing? In your `*scratch*` buffer, set your
 `(setq inferior-lisp-program "lein try tentacles")`
 
 and then launch `M-x inferior-lisp`.
-
-#### On ZSH
-
-[ZSH](zsh.org) has this fun feature where `[..]` is a special type of pattern matching–this kind of sucks for this plugin, no?
-
-You have two options to get around this:
-
-1. Use `noglob` before `lein try`. (If you never use `[]` matching with lein, just `alias lein="noglob lein"` in your zshrc.)
-2. Copy-paste *only* the library and dependency (i.e. `lein try clj-time "0.5.1"`)
 
 ## Contributions
 
