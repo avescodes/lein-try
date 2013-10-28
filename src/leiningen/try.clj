@@ -40,13 +40,30 @@
   [deps project]
   (update-in project [:profiles :try :dependencies] (comp vec concat) deps))
 
+(defn add-reload-data-readers-injection
+  "Add injection to project map that lets the REPL reload data readers. This is necessary
+   in cases where no new JVM is spun up, thus `clojure.core` and the available data readers
+   are not reloaded."
+  [project]
+  (if (or (= (:eval-in project) :leiningen)
+          (:eval-in-leiningen project))
+    (update-in project [:profiles :try :injections] conj
+               `(or
+                  (when-let [v# (resolve 'clojure.core/load-data-readers)]
+                    (when-let [f# (var-get v#)]
+                      (when (fn? f#)
+                        (set! *data-readers* (merge *data-readers* (f#))))))
+                  (println "Could not reload Data Readers ...")))
+    project))
+
 (defn- start-try-repl!
   "Resolve try-dependencies and start REPL."
   [project]
   (let [project (when project
-                  (prj/merge-profiles
-                    (prj/project-with-profiles project)
-                    [:try]))]
+                  (-> project
+                      (add-reload-data-readers-injection)
+                      (prj/project-with-profiles)
+                      (prj/merge-profiles [:try])))]
     (main/apply-task "repl" project nil)))
 
 (defn ^:no-project-needed ^:higher-order try
