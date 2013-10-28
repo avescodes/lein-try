@@ -59,11 +59,11 @@
 (defn- start-try-repl!
   "Resolve try-dependencies and start REPL."
   [project]
-  (let [project (when project
-                  (-> project
-                      (add-reload-data-readers-injection)
-                      (prj/project-with-profiles)
-                      (prj/merge-profiles [:try])))]
+  (let [project (-> project
+                    add-reload-data-readers-injection
+                    ;; Necessary to update project map metadata Lein uses internally
+                    prj/project-with-profiles
+                    (prj/merge-profiles [:try]))]
     (main/apply-task "repl" project nil)))
 
 (defn ^:no-project-needed ^:higher-order try
