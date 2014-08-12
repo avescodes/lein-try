@@ -14,10 +14,10 @@ Put the following into the `:plugins` vector of the `:user` profile in your `~/.
 
 ```clojure
 ;; All alone:
-[lein-try "0.4.2"]
+[lein-try "0.4.3"]
 
 ;; The whole thing:
-{:user {:plugins [[lein-try "0.4.1"]]}}
+{:user {:plugins [[lein-try "0.4.3"]]}}
 ```
 
 This plugin requires Leiningen >= 2.1.3.
