@@ -13,7 +13,11 @@ Special thanks to contributors [@xsc](https://github.com/xsc) and [@seancorfield
 Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
 
 ```clojure
-[lein-try "0.4.1"]
+;; All alone:
+[lein-try "0.4.2"]
+
+;; The whole thing:
+{:user {:plugins [[lein-try "0.4.1"]]}}
 ```
 
 This plugin requires Leiningen >= 2.1.3.
