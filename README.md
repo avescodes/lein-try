@@ -83,8 +83,13 @@ Here is an elisp function that automates this:
   (interactive "sEnter library name: ")
   (when (get-buffer "*inferior-lisp*")
     (kill-buffer "*inferior-lisp*"))
+  (clojure-mode)
   (switch-to-buffer "*scratch*")
-  (inferior-lisp (format "lein try %s" x)))
+  (setq inferior-lisp-program (format "lein try %s" x))
+  (call-interactively 'inferior-lisp)
+  (switch-to-buffer "*scratch*")
+  (display-buffer "*inferior-lisp*"))
+
 ```
 
 ## Contributions
