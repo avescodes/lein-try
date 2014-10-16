@@ -77,6 +77,16 @@ Miss Emacs integration while `lein try`ing? In your `*scratch*` buffer, set your
 
 and then launch `M-x inferior-lisp`.
 
+Here is an elisp function that automates this:
+```elisp
+(defun lein-try (x)
+  (interactive "sEnter library name: ")
+  (when (get-buffer "*inferior-lisp*")
+    (kill-buffer "*inferior-lisp*"))
+  (switch-to-buffer "*scratch*")
+  (inferior-lisp (format "lein try %s" x)))
+```
+
 ## Contributions
 
 Contributions are more than welcome. Fire away in an [issue](../../issues/new) or pull-request.
