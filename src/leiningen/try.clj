@@ -35,6 +35,18 @@
     (fn [args]
       (lazy-convert args))))
 
+(defn- disable-pedantic
+  "Reduce `:pedantic?` level to `:warn` if `:abort` is given, maintain type to
+   not cause unnecessary warnings."
+  [{:keys [pedantic?] :as project}]
+  (if (and pedantic? (= (name pedantic?) "abort"))
+    (->> (condp #(% %2) pedantic?
+           string? "warn"
+           symbol? 'warn
+           :warn)
+         (assoc-in project [:profiles :try :pedantic?]))
+    project))
+
 (defn- add-try-deps
   "Add list of try-dependencies to project."
   [deps project]
@@ -60,6 +72,7 @@
   "Resolve try-dependencies and start REPL."
   [project]
   (let [project (-> project
+                    disable-pedantic
                     add-reload-data-readers-injection
                     ;; Necessary to update project map metadata Lein uses internally
                     prj/project-with-profiles
