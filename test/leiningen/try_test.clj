@@ -42,3 +42,17 @@
                                     :profiles {:try {:dependencies [[:a :b]]}}})
            {:dependencies [[:c :d]]
             :profiles {:try {:dependencies [[:a :b] [:e :f]]}}}))))
+
+(deftest disable-pedantic-test
+  (let [disable-pedantic #'leiningen.try/disable-pedantic]
+    (are [project] (= (disable-pedantic project) project)
+         {}
+         {:pedantic? :warn}
+         {:pedantic? :none}
+         {:pedantic? :something-else})
+    (are [pedantic? result] (= (get-in (disable-pedantic {:pedantic? pedantic?})
+                                       [:profiles :try :pedantic?])
+                               result)
+         :abort  :warn
+         'abort  'warn
+         "abort" "warn")))
