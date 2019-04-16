@@ -10,14 +10,15 @@ Special thanks to contributors [@xsc](https://github.com/xsc) and [@seancorfield
 
 #### Leiningen ([via Clojars](https://clojars.org/lein-try))
 
-Put the following into the `:plugins` vector of the `:user` profile in your `~/.lein/profiles.clj`:
+Add `lein-try` to the `:plugins`vector of the `:user` profile in your `~/.lein/profiles.clj`, e.g.:
 
 ```clojure
-;; All alone:
-[lein-try "0.4.3"]
-
-;; The whole thing:
-{:user {:plugins [[lein-try "0.4.3"]]}}
+{:user 
+  {:plugins [
+     [lein-try "0.4.3"]
+   ]
+  }
+}
 ```
 
 This plugin requires Leiningen >= 2.1.3.
